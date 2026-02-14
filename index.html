@@ -10,6 +10,11 @@
 </head>
 <body>
   <canvas id="bg"></canvas>
+<script>
+  if (!sessionStorage.getItem("slither_play")) {
+    window.location.href = "./lobby.html";
+  }
+</script>
 
   <div id="deathScreen" style="
     position: fixed;

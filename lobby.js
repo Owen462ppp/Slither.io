@@ -17,5 +17,10 @@ playBtn.addEventListener("click", () => {
   };
 
   localStorage.setItem("slither_settings", JSON.stringify(settings));
-  window.location.href = "./index.html";
+
+// ADD THIS LINE
+sessionStorage.setItem("slither_play", "1");
+
+window.location.href = "./index.html";
+
 });

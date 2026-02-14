@@ -1,7 +1,10 @@
 import { setAfterDraw, setCamera, setZoom } from "./background.js";
 //import { createBots, updateBots, botsEatFood, drawBots } from "./bots.js";
 
-const socket = io();
+const socket = io("https://slither-server-sntp.onrender.com", {
+  transports: ["websocket"],
+});
+
 
 socket.on("connect", () => {
   console.log("socket connected:", socket.id);
@@ -87,6 +90,12 @@ window.addEventListener("contextmenu", (e) => {
 });
 
 const settings = JSON.parse(localStorage.getItem("slither_settings") || "{}");
+
+// if you did not press Play, go back
+if (!sessionStorage.getItem("slither_play")) {
+  window.location.href = "./lobby.html";
+}
+
 const playerName = (settings.name || "Player").trim().slice(0, 16);
 
 const baseWorldRadius = settings.worldRadius || 2000;
@@ -94,7 +103,13 @@ let worldRadius = baseWorldRadius;
 let targetWorldRadius = baseWorldRadius;
 
 const snakeColor = settings.color || "#39ff88";
+
+// join only after Play
 socket.emit("join", { name: playerName, color: snakeColor });
+
+// optional: clear so refresh returns to lobby
+sessionStorage.removeItem("slither_play");
+
 
 
 
