@@ -1,69 +1,9 @@
 <!doctype html>
 <html>
-<head>
-  <meta charset="utf-8" />
-  <title>Hex Background</title>
-  <style>
-    html, body { margin:0; padding:0; background:#0b0b0b; overflow:hidden; }
-    canvas { display:block; }
-  </style>
-</head>
-<body>
-  <canvas id="bg"></canvas>
-<script>
-  if (!sessionStorage.getItem("slither_play")) {
-    window.location.href = "./lobby.html";
-  }
-</script>
-
-  <div id="deathScreen" style="
-    position: fixed;
-    inset: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0,0,0,0.6);
-    z-index: 10;
-    font-family: Arial, sans-serif;
-  ">
-    <div style="
-      background: #121212;
-      border: 1px solid #2a2a2a;
-      border-radius: 14px;
-      padding: 22px;
-      width: 320px;
-      text-align: center;
-      color: white;
-    ">
-      <div style="font-size: 28px; margin-bottom: 14px;">You died</div>
-
-      <button id="playAgainBtn" style="
-        width: 100%;
-        padding: 12px;
-        border-radius: 10px;
-        border: 0;
-        cursor: pointer;
-        font-size: 16px;
-        margin-bottom: 10px;
-      ">Play again</button>
-
-      <button id="lobbyBtn" style="
-        width: 100%;
-        padding: 12px;
-        border-radius: 10px;
-        border: 0;
-        cursor: pointer;
-        font-size: 16px;
-        background: #2a2a2a;
-        color: white;
-      ">Return to lobby</button>
-    </div>
-  </div>
-
-  <script type="module" src="./background.js"></script>
-<script src="https://slither-server-sntp.onrender.com/socket.io/socket.io.js"></script>
-
-<script type="module" src="./snakeMouse.js"></script>
-
-</body>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="refresh" content="0; url=./lobby.html">
+    <title>Slither</title>
+  </head>
+  <body></body>
 </html>

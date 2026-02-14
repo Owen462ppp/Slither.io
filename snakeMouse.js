@@ -1,6 +1,12 @@
 import { setAfterDraw, setCamera, setZoom } from "./background.js";
 //import { createBots, updateBots, botsEatFood, drawBots } from "./bots.js";
 
+// gate BEFORE connecting
+if (!sessionStorage.getItem("slither_play")) {
+  window.location.href = "./lobby.html";
+  throw new Error("Not in game");
+}
+
 const socket = io("https://slither-server-sntp.onrender.com", {
   transports: ["websocket"],
 });
@@ -89,12 +95,16 @@ window.addEventListener("contextmenu", (e) => {
   e.preventDefault();
 });
 
+const lobbyBtn = document.getElementById("lobbyBtn");
+if (lobbyBtn) {
+  lobbyBtn.addEventListener("click", () => {
+    window.location.href = "./lobby.html";
+  });
+}
+
 const settings = JSON.parse(localStorage.getItem("slither_settings") || "{}");
 
-// if you did not press Play, go back
-if (!sessionStorage.getItem("slither_play")) {
-  window.location.href = "./lobby.html";
-}
+
 
 const playerName = (settings.name || "Player").trim().slice(0, 16);
 
@@ -196,7 +206,7 @@ function hideDeathUI() {
 }
 
 const playAgainBtn = document.getElementById("playAgainBtn");
-const lobbyBtn = document.getElementById("lobbyBtn");
+
 
 
 
@@ -263,11 +273,7 @@ function resetGame() {
 
 if (playAgainBtn) playAgainBtn.addEventListener("click", resetGame);
 
-if (lobbyBtn) {
-  lobbyBtn.addEventListener("click", () => {
-    window.location.href = "./lobby.html";
-  });
-}
+
 
 
 

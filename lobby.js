@@ -21,6 +21,6 @@ playBtn.addEventListener("click", () => {
 // ADD THIS LINE
 sessionStorage.setItem("slither_play", "1");
 
-window.location.href = "./index.html";
+window.location.href = "./game.html";
 
 });
