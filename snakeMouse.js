@@ -7,7 +7,13 @@ if (!sessionStorage.getItem("slither_play")) {
   throw new Error("Not in game");
 }
 
-const socket = io("https://slither-server-sntp.onrender.com", {
+const SERVER_URL =
+  location.hostname === "localhost" ||
+  location.hostname === "127.0.0.1"
+    ? "http://localhost:3000"
+    : "https://slither-server-sntp.onrender.com";
+
+const socket = io(SERVER_URL, {
   transports: ["websocket"],
 });
 
@@ -31,7 +37,10 @@ socket.on("state", (s) => {
   if (typeof s.worldRadius === "number") {
     worldRadius = s.worldRadius;
   }
+
+  syncMyStateFromServer();
 });
+
 
 
 setInterval(() => {
@@ -802,13 +811,35 @@ function syncMySizeFromServer() {
   }
 }
 
+function syncMyStateFromServer() {
+  const me = netPlayers.find(p => p && p.id === myId);
+  if (!me) return;
+
+  // snap your head to the server
+  if (me.head) {
+    head.x = me.head.x;
+    head.y = me.head.y;
+    head.a = me.head.a;
+  }
+
+  // match your body positions to the server
+  if (Array.isArray(me.body) && me.body.length) {
+    body = me.body.map(s => ({ x: s.x, y: s.y }));
+    segmentCount = body.length;
+  }
+
+  // match radius from server
+  if (typeof me.snakeRadius === "number") {
+    snakeRadius = me.snakeRadius;
+  }
+}
 
 function tick(ctx) {
   // move your snake locally
   if (!dead) {
     stepHead();
     stepBody();
-    syncMySizeFromServer();
+  
 
   }
 

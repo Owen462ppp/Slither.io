@@ -32,6 +32,11 @@ const SEGMENT_SPACING = 9;
 
 const SNAKE_RADIUS = 9;
 
+const MIN_SEGMENTS = 10;
+const MIN_SNAKE_RADIUS = 9;
+
+const BOOST_SHRINK_RATE = 0.05;     // how fast radius shrinks
+const BOOST_LENGTH_LOSS_RATE = 0.02; // chance per tick to lose a segment
 
 const TICK_RATE = 60;
 const BASE_SPEED = 3;
@@ -247,7 +252,36 @@ seedTrailForSpawn(p);
 
 setInterval(() => {
   for (const p of players.values()) {
+
     const speed = p.boosting ? BOOST_SPEED : BASE_SPEED;
+
+    if (p.boosting) {
+      console.log("BOOST", p.id, "radius", p.snakeRadius, "len", p.body.length);
+    }
+
+const atMinSize =
+  p.segmentCount <= MIN_SEGMENTS &&
+  p.snakeRadius <= MIN_SNAKE_RADIUS;
+
+if (p.boosting && !atMinSize) {
+
+  // shrink radius
+  if (p.snakeRadius > MIN_SNAKE_RADIUS) {
+    p.snakeRadius = Math.max(
+      MIN_SNAKE_RADIUS,
+      p.snakeRadius - BOOST_SHRINK_RATE
+    );
+  }
+
+  // randomly lose body segment
+  if (Math.random() < BOOST_LENGTH_LOSS_RATE &&
+      p.segmentCount > MIN_SEGMENTS) {
+
+    p.segmentCount--;
+    p.body.pop();
+  }
+
+}
 
     const targetA = p.inputA;
     let da = clampAngle(targetA - p.head.a);
